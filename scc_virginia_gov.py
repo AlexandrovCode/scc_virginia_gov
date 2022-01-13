@@ -447,8 +447,9 @@ class Handler(Extract, GetPages):
                 self.overview[fieldName] = el[0] if type(el) == list else el
 
             if fieldName == 'previous_names':
-                if els:
+                if els[0] is not None:
                     res = []
+                    #print(els)
                     for n, fr, to in zip(*els):
                         temp = {
                             'name': n,
@@ -569,8 +570,9 @@ class Handler(Extract, GetPages):
             data = self.getASPhiddenFields()
             data['__EVENTTARGET'] = 'ctl00$MainContent$gvCmpyResults'
             data['__EVENTARGUMENT'] = label
-            data['ctl00$MainContent$txtCmpyName'] = 'bank'
+            data['ctl00$MainContent$txtCmpyName'] = searchquery
             self.get_working_tree_api(url, 'tree', method='POST', data=data)
+            #self.check_tree()
             self.overview = {}
             self.overview['isDomiciledIn'] = 'US'
             self.overview['@source-id'] = self.NICK_NAME
