@@ -541,6 +541,7 @@ class Handler(Extract, GetPages):
         return text
 
     def get_overview(self, link_name):
+        #print(link_name)
         company_name = link_name.split('?=')[-1]
         searchquery = link_name.split('?=')[0]
         # label = link_name.split('?=')[0]
@@ -561,12 +562,13 @@ class Handler(Extract, GetPages):
         #self.check_tree()
 
         label = self.get_by_xpath(f'//tr/td[2]/text()[contains(., "{company_name}")]/../../td[1]/a/@href')
+        #print(label)
         if label:
             label = label[0]
             label = label.split("'")[-2]
             data = self.getASPhiddenFields()
             data['__EVENTTARGET'] = 'ctl00$MainContent$gvCmpyResults'
-            data['__EVENTARGUMENT'] = 'Select$1'
+            data['__EVENTARGUMENT'] = label
             data['ctl00$MainContent$txtCmpyName'] = 'bank'
             self.get_working_tree_api(url, 'tree', method='POST', data=data)
             self.overview = {}
